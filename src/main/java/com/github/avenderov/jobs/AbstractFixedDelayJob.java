@@ -27,21 +27,23 @@ public abstract class AbstractFixedDelayJob implements Runnable {
 
     @PostConstruct
     public void schedule() {
-        executorServiceOpt
-            .ifPresentOrElse(
-                e -> {
-                    final var delayInMillis = delay.toMillis();
-                    e.scheduleWithFixedDelay(
-                        new ErrorHandlingRunnable(this), delayInMillis, delayInMillis, TimeUnit.MILLISECONDS);
-                    scheduled.set(true);
-                },
-                () ->
-                    LOG.warn("Executor service was not provided. Job name='{}' will not be scheduled",
-                        this.getClass().getSimpleName()));
+        executorServiceOpt.ifPresentOrElse(this::scheduleJob, this::warnNoScheduler);
     }
 
     public final boolean isScheduled() {
         return scheduled.get();
+    }
+
+    private void scheduleJob(final ScheduledExecutorService executorService) {
+        final var delayInMillis = delay.toMillis();
+        executorService.scheduleWithFixedDelay(
+            new ErrorHandlingRunnable(this), delayInMillis, delayInMillis, TimeUnit.MILLISECONDS);
+        scheduled.set(true);
+    }
+
+    private void warnNoScheduler() {
+        LOG.warn("Executor service was not provided. Job name='{}' will not be scheduled",
+            this.getClass().getSimpleName());
     }
 
     private static class ErrorHandlingRunnable implements Runnable {
