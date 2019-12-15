@@ -1,6 +1,6 @@
 # Simple Job
 
-Simple programmatic job scheduling example. Job will not be scheduled during tests tests.
+Simple programmatic job scheduling example. Job will not be scheduled during tests.
 
 ## Run tests
 
