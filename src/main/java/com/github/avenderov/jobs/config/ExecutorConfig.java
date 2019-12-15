@@ -9,10 +9,10 @@ import java.util.concurrent.ScheduledExecutorService;
 
 @Profile("!test")
 @Configuration
-public class ThreadPoolConfig {
+public class ExecutorConfig {
 
     @Bean
-    public ScheduledExecutorService messagePrintingJobThreadPool() {
+    public ScheduledExecutorService messagePrintingJobExecutor() {
         return Executors.newSingleThreadScheduledExecutor();
     }
 }

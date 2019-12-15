@@ -20,7 +20,7 @@ public class MessagePrintingJob extends AbstractFixedDelayJob {
 
     @Autowired
     public MessagePrintingJob(
-        @Qualifier("messagePrintingJobThreadPool") final Optional<ScheduledExecutorService> executorServiceOpt) {
+        @Qualifier("messagePrintingJobExecutor") final Optional<ScheduledExecutorService> executorServiceOpt) {
         this(executorServiceOpt, Duration.ofSeconds(5L), new LoggingMessageConsumer());
     }
 
