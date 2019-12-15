@@ -34,6 +34,10 @@ public abstract class AbstractFixedDelayJob implements Runnable {
         return scheduled.get();
     }
 
+    public final String getName() {
+        return this.getClass().getSimpleName();
+    }
+
     private void scheduleJob(final ScheduledExecutorService executorService) {
         final var delayInMillis = delay.toMillis();
         executorService.scheduleWithFixedDelay(
@@ -42,8 +46,7 @@ public abstract class AbstractFixedDelayJob implements Runnable {
     }
 
     private void warnNoScheduler() {
-        LOG.warn("Executor service was not provided. Job name='{}' will not be scheduled",
-            this.getClass().getSimpleName());
+        LOG.warn("Executor service was not provided. Job name='{}' will not be scheduled", getName());
     }
 
     private static class ErrorHandlingRunnable implements Runnable {
